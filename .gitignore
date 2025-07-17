@@ -1,0 +1,10 @@
+# ------------------------------
+# Python byte‑code a cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# (volitelné) virtuální prostředí
+.venv/
+env/
+requirements.txt
