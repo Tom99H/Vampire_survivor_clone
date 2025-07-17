@@ -1,10 +1,12 @@
 import pygame
 import asyncio
+import platform
 from systems.input_handler import InputHandler  # Ensure input_handler.py exists in systems/
 from systems.spawner import Spawner
 from systems.collision import CollisionSystem
 from systems.ui import UI
 from entities.player import Player
+from locations.default_map import DefaultMap
 from constants import WIDTH, HEIGHT, FPS
 
 class Game:
@@ -19,6 +21,7 @@ class Game:
         self.ui = UI()
         self.running = True
         self.paused = False
+        self.map = DefaultMap()  # Initialize the map
 
     async def run(self):
         last_spawn = 0
@@ -42,12 +45,13 @@ class Game:
                     last_spawn = current_time
 
                 # Update game state
+                self.map.update()  # Update the background
                 self.player.update()
                 self.spawner.update_enemies(self.player.pos)
                 self.collision_system.update(self.player, self.spawner.enemies, self.ui)
 
             # Draw everything
-            self.screen.fill((0, 0, 0))  # BLACK
+            self.map.draw(self.screen)  # Draw the background
             if not self.paused:
                 self.player.draw(self.screen)
                 self.spawner.draw_enemies(self.screen)
